@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Atendimento | Regularize seu Plano</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CONFIGURAÇÕES GERAIS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
+            color: #333; 
+            line-height: 1.6; 
+            background-color: #f4f7f6; 
+        }
+        html { scroll-behavior: smooth; }
+
+        :root {
+            /* Cores Estilo MedSenior */
+            --primary: #006838;   /* Verde Institucional Forte */
+            --secondary: #4caf50; /* Verde Acentuado */
+            --dark: #004225;      /* Verde Quase Preto */
+            --light: #e9f5ec;     /* Fundo Verde Muito Claro */
+            --white: #ffffff;
+            --alert: #c62828;     /* Vermelho Sóbrio */
+        }
+
+        /* --- CABEÇALHO (MENU) --- */
+        header {
+            background: var(--white);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        nav { display: flex; justify-content: space-between; align-items: center; height: 85px; }
+        
+        .logo { 
+            font-size: 24px; font-weight: 800; color: var(--primary); 
+            display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .menu-links { display: flex; gap: 30px; align-items: center; }
+        .menu-links a {
+            text-decoration: none; color: #555; font-weight: 600; transition: 0.3s; font-size: 15px;
+        }
+        .menu-links a:hover { color: var(--primary); }
+        
+        .btn-negociar-menu { 
+            background: var(--primary); color: white !important; padding: 10px 25px; border-radius: 5px; 
+            font-weight: bold; text-transform: uppercase; font-size: 13px;
+        }
+        .btn-negociar-menu:hover { background: var(--dark); }
+
+        /* --- SEÇÃO HERO --- */
+        .hero {
+            background: linear-gradient(rgba(0, 66, 37, 0.85), rgba(0, 104, 56, 0.85)), url('https://images.unsplash.com/photo-1516733968668-dbdce39c4651?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            padding: 180px 0 100px 0; text-align: center; color: white;
+        }
+
+        .hero h1 { font-size: 3.2rem; margin-bottom: 20px; font-weight: 700; line-height: 1.2; }
+        .hero p { font-size: 1.4rem; max-width: 800px; margin: 0 auto 40px auto; opacity: 0.95; font-weight: 300; }
+
+        .btn-hero {
+            padding: 18px 40px; border-radius: 50px; font-weight: bold; font-size: 18px; 
+            text-decoration: none; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px;
+            background: #fff; color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .btn-hero:hover { transform: scale(1.05); background: var(--light); }
+
+        /* --- SEÇÃO SERVIÇOS --- */
+        section { padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
+        .section-title p { color: #666; font-size: 1.1rem; }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        
+        .service-card {
+            background: white; padding: 40px 25px; border-radius: 8px; text-align: center; transition: 0.3s;
+            border: 1px solid #e0e0e0; border-top: 5px solid var(--primary); cursor: pointer;
+        }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0, 104, 56, 0.15); }
+        .service-icon { font-size: 48px; color: var(--primary); margin-bottom: 25px; }
+        .service-card h3 { font-size: 1.3rem; color: #333; margin-bottom: 15px; font-weight: 700; }
+        .service-card p { font-size: 0.95rem; color: #666; line-height: 1.5; }
+        .card-destaque { background-color: #fffbfb; border-top-color: var(--alert); }
+        .card-destaque .service-icon { color: var(--alert); }
+
+        /* --- ATENDIMENTO E FORMULÁRIO --- */
+        .negotiation-section { background-color: var(--light); border-top: 1px solid #dcebdb; }
+        .form-container { display: flex; flex-wrap: wrap; gap: 50px; align-items: center; justify-content: center; }
+        .form-info { flex: 1; min-width: 300px; }
+        .form-info h3 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
+        .form-info ul { list-style: none; }
+        .form-info li { margin-bottom: 15px; font-size: 1.1rem; display: flex; gap: 10px; align-items: center; }
+        .form-info li i { color: var(--secondary); }
+        
+        .form-card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); width: 100%; max-width: 450px; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; color: #444; font-size: 14px; text-transform: uppercase; }
+        input[type="text"] { width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 6px; font-size: 16px; outline: none; transition: 0.3s; background: #fafafa; }
+        input[type="text"]:focus { border-color: var(--primary); background: white; }
+        
+        /* Checkbox LGPD */
+        .lgpd-check { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; font-size: 12px; color: #666; text-align: left; }
+        .lgpd-check input { margin-top: 3px; cursor: pointer; }
+        .lgpd-check a { color: var(--primary); text-decoration: underline; cursor: pointer; }
+
+        .btn-whatsapp-large { width: 100%; padding: 18px; background-color: #25d366; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s; }
+        .btn-whatsapp-large:hover { background-color: #1ebc57; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); }
+
+        /* --- FAQ --- */
+        .faq-section { background: white; padding: 80px 0; }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .faq-question { width: 100%; text-align: left; padding: 20px; background: white; border: none; outline: none; font-size: 18px; font-weight: 600; color: #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .faq-question:hover { background-color: #f9f9f9; color: var(--primary); }
+        .faq-question.active { background-color: var(--light); color: var(--primary); }
+        .faq-question.active i { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #fff; }
+        .faq-answer p { padding: 20px; color: #555; font-size: 16px; border-top: 1px solid #eee; }
+
+        /* --- AVISO DE COOKIES (NOVO) --- */
+        .cookie-banner {
+            position: fixed; bottom: -200px; /* Começa escondido */
+            left: 0; width: 100%; background: white; border-top: 4px solid var(--primary);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); padding: 20px;
+            z-index: 9999; transition: bottom 0.5s ease-in-out;
+            display: flex; justify-content: center;
+        }
+        .cookie-banner.show { bottom: 0; } /* Classe que faz aparecer */
+        
+        .cookie-content {
+            max-width: 1100px; width: 100%; display: flex; align-items: center; 
+            justify-content: space-between; gap: 20px;
+        }
+        .cookie-text { font-size: 14px; color: #555; }
+        .cookie-text a { color: var(--primary); text-decoration: underline; font-weight: bold; cursor: pointer; }
+        
+        .cookie-btn {
+            background: var(--primary); color: white; border: none; padding: 10px 30px;
+            border-radius: 5px; font-weight: bold; cursor: pointer; white-space: nowrap;
+            transition: 0.3s;
+        }
+        .cookie-btn:hover { background: var(--dark); }
+
+        /* --- RODAPÉ --- */
+        footer { background: #333; color: #ccc; text-align: center; padding: 50px 0; font-size: 13px; margin-bottom: 0px;}
+        .footer-links { margin-top: 20px; display: flex; justify-content: center; gap: 20px; }
+        .footer-links a { color: #888; text-decoration: none; border-bottom: 1px dotted #888; transition: 0.3s; cursor: pointer; }
+        .footer-links a:hover { color: white; border-color: white; }
+
+        /* --- MODAL (JANELA DE TERMOS) --- */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; width: 90%; max-width: 700px; max-height: 80vh;
+            border-radius: 10px; padding: 40px; position: relative; overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 { color: var(--primary); margin-bottom: 20px; }
+        .modal-content p { margin-bottom: 15px; font-size: 14px; text-align: justify; color: #555; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #999; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: var(--alert); }
+
+        .float-whatsapp { position: fixed; width: 65px; height: 65px; bottom: 30px; right: 30px; background-color: #25d366; color: #FFF; border-radius: 50%; text-align: center; font-size: 38px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .float-whatsapp:hover { transform: scale(1.1); background-color: #1ebc57; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .menu-links { display: none; }
+            .form-container { flex-direction: column; }
+            .cookie-content { flex-direction: column; text-align: center; }
+            .cookie-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo"><i class="fa-solid fa-notes-medical"></i>CENTRAL DE ATENDIMENTO</div>
+                <div class="menu-links">
+                    <a href="#inicio">Início</a>
+                    <a href="#servicos">Serviços</a>
+                    <a href="#faq">Dúvidas</a>
+                    <a onclick="abrirWhatsappDireto()" class="btn-negociar-menu" style="cursor: pointer;">
+                        <i class="fa-brands fa-whatsapp"></i> Falar com Atendente
+</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero" id="inicio">
+        <div class="container">
+            <h1>Não fique sem seu plano de saúde</h1>
+            <p>Atendimento exclusivo para regularização de boletos em atraso e emissão de 2ª via.</p>
+            <a href="#atendimento" class="btn-hero"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 24px;"></i> Regularizar Agora</a>
+        </div>
+    </div>
+
+    <section id="servicos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Como podemos ajudar?</h2>
+                <p>Selecione uma opção para atendimento especializado.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card card-destaque" onclick="irParaFormulario('Negociação de Débitos')">
+                    <div class="service-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3>Boletos em Atraso</h3>
+                    <p>Parcelamento de faturas vencidas e renegociação para evitar cancelamento.</p>
+                </div>
+                <div class="service-card" onclick="irParaFormulario('2ª Via de Boleto')">
+                    <div class="service-icon"><i class="fa-solid fa-barcode"></i></div>
+                    <h3>2ª Via Atualizada</h3>
+                    <p>Emita a segunda via rapidamente sem juros.</p>
+                </div>
+                <div class="service-card" onclick="irParaFormulario('Rede Credenciada')">
+                    <div class="service-icon"><i class="fa-solid fa-hospital-user"></i></div>
+                    <h3>Antecipação</h3>
+                    <p>Reduza o valor total da sua dívida com descontos.</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section id="atendimento" class="negotiation-section">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-info">
+                    <h3>Atendimento Humanizado</h3>
+                    <p style="margin-bottom: 20px;">Estamos prontos para resolver sua pendência com sigilo e rapidez.</p>
+                    <ul>
+                        <li><i class="fa-solid fa-check-circle"></i> Negocie sem sair de casa</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Evite o bloqueio do plano</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Parcelamento facilitado</li>
+                    </ul>
+                </div>
+                <div class="form-card">
+                    <div style="text-align: center; margin-bottom: 20px; color: #666;"><small>Preencha para iniciar a conversa</small></div>
+                    
+                    <form onsubmit="abrirWhatsappForm(event)">
+                        <div class="input-group">
+                            <label>Nome do Beneficiário</label>
+                            <input type="text" id="nome" placeholder="Nome completo" required>
+                        </div>
+                        <div class="input-group">
+                            <label>CPF/CNPJ OU Nº DA CARTEIRINHA</label>
+                            <input type="text" id="doc" placeholder="000.000.000-00" required>
+                        </div>
+                        <input type="hidden" id="assunto" value="Regularização Geral">
+
+                        <div class="lgpd-check">
+                            <input type="checkbox" id="aceite" required>
+                            <label for="aceite" style="font-weight: normal; margin: 0; text-transform: none;">
+                                Declaro que li e concordo com a <a onclick="abrirModal('politica')">Política de Privacidade</a> e autorizo o contato via WhatsApp.
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-whatsapp-large"><i class="fa-brands fa-whatsapp" style="font-size: 26px;"></i> CHAMAR NO WHATSAPP</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Dúvidas Frequentes</h2>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">Meu plano é cancelado se eu atrasar?<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-answer"><p>O plano pode ser suspenso após 60 dias de inadimplência, consecutivos ou não. Regularize para evitar a perda da carência.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Consigo parcelar minha dívida?<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-answer"><p>Sim! Oferecemos condições especiais de parcelamento. Consulte as opções disponíveis para o seu contrato.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Quanto tempo demora para liberar?<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-answer"><p>Geralmente, o desbloqueio ocorre em até 24 horas úteis após a compensação do pagamento.</p></div>
+                </div>
+            </div>>
+        </div>
+    </section>
+
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-content">
+            <p class="cookie-text">
+                🍪 <strong>Uso de Cookies:</strong> Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência de navegação e garantir a segurança do site. Ao continuar navegando, você concorda com a nossa <a onclick="abrirModal('politica')">Política de Privacidade</a>.
+            </p>
+            <button class="cookie-btn" onclick="aceitarCookies()">Aceitar e Fechar</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p style="font-size: 16px; color: white; margin-bottom: 10px;">CENTRAL DE ATENDIMENTO</p>
+            <p>&copy; 2018 - Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a onclick="abrirModal('termos')">Termos de Uso</a>
+                <a onclick="abrirModal('politica')">Política de Privacidade</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modalLegal" class="modal-overlay" onclick="fecharModal(event)">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModalBtn()">&times;</span>
+            <div id="conteudoModal"></div>
+        </div>
+    </div>
+
+    <a href="#" onclick="abrirWhatsappDireto()" class="float-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <script>
+        const numeroWhatsapp = "5511967165048"; 
+
+        const textoPolitica = `
+            <h2>Política de Privacidade e Cookies</h2>
+            <p><strong>1. Coleta de Dados:</strong> A Saúde Mais coleta apenas os dados essenciais (Nome, CPF/Matrícula) para identificar o beneficiário.</p>
+            <p><strong>2. Cookies:</strong> Utilizamos cookies essenciais para o funcionamento do site e cookies de análise para entender como você usa nossa plataforma. Ao aceitar, você permite o armazenamento dessas informações no seu navegador.</p>
+            <p><strong>3. Segurança:</strong> Seus dados são processados com segurança e não são vendidos para terceiros.</p>
+        `;
+
+        const textoTermos = `
+            <h2>Termos de Uso</h2>
+            <p><strong>1. Do Serviço:</strong> Este site é uma central de facilitação. Pagamentos devem ser feitos apenas nos canais oficiais.</p>
+        `;
+
+        // LÓGICA DE COOKIES (NOVO)
+        // Verifica se o usuário já aceitou antes
+        if (!localStorage.getItem('cookieConsent')) {
+            // Se não aceitou, mostra a barra depois de 1 segundo
+            setTimeout(() => {
+                document.getElementById('cookieBanner').classList.add('show');
+            }, 1000);
+        }
+
+        // Função do botão aceitar
+        function aceitarCookies() {
+            // Salva no navegador que a pessoa aceitou
+            localStorage.setItem('cookieConsent', 'true');
+            // Remove a barra
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        function abrirModal(tipo) {
+            const modal = document.getElementById('modalLegal');
+            const conteudo = document.getElementById('conteudoModal');
+            if (tipo === 'politica') { conteudo.innerHTML = textoPolitica; } 
+            else { conteudo.innerHTML = textoTermos; }
+            modal.style.display = 'flex';
+        }
+
+        function fecharModalBtn() { document.getElementById('modalLegal').style.display = 'none'; }
+        function fecharModal(event) { if (event.target === document.getElementById('modalLegal')) { document.getElementById('modalLegal').style.display = 'none'; } }
+
+        const faqQuestions = document.querySelectorAll(".faq-question");
+        faqQuestions.forEach(question => {
+            question.addEventListener("click", () => {
+                question.classList.toggle("active");
+                const answer = question.nextElementSibling;
+                if (question.classList.contains("active")) { answer.style.maxHeight = answer.scrollHeight + "px"; } 
+                else { answer.style.maxHeight = 0; }
+            });
+        });
+
+        function abrirWhatsappForm(e) {
+            e.preventDefault();
+            if(!document.getElementById('aceite').checked) { alert("Você precisa aceitar os termos."); return; }
+            const nome = document.getElementById('nome').value;
+            const doc = document.getElementById('doc').value;
+            const assunto = document.getElementById('assunto').value;
+            const texto = `Olá! Meu nome é *${nome}* (Doc: ${doc}).%0AGostaria de atendimento sobre: *${assunto}*.`;
+            window.open(`https://wa.me/${numeroWhatsapp}?text=${texto}`, '_blank');
+        }
+
+        function abrirWhatsappDireto() {
+            window.open(`https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent("Olá! Gostaria de regularizar meu plano.")}`, '_blank');
+        }
+
+        function irParaFormulario(tema) {
+            document.getElementById('assunto').value = tema;
+            document.getElementById('atendimento').scrollIntoView();
+            document.getElementById('nome').focus();
+        }
+    </script>
+</body>
+</html>
